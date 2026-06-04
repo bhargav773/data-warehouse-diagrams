@@ -1,6 +1,6 @@
-# Data Warehouse ER Diagram (Mermaid) - Simplified
+# Data Warehouse ER Diagram (Mermaid) - Simplified with All Fact Columns
 
-## Snowflake Schema with Essential Columns Only
+## Snowflake Schema with Essential Columns + All Fact Configuration Metrics
 
 ```mermaid
 erDiagram
@@ -86,6 +86,57 @@ erDiagram
         string ProductID FK
         string CustomerID FK
         string OpportunityID FK
+        string PriceDealId
+        string UnitCostId
+        int LineNumber
+        string SourceName
+        string EXTERNALQUOTEID
+        string PriceDealEntityProductItemId
+        int Term
+        string PetraPricing
+        string ColtIgnore
+        string DQPID
+        string Ignore
+        string ReportRegion
+        string Vendor
+        string AccessType
+        date QuoteCreateDate
+        date QuoteUpdateDate
+        decimal IntentA
+        decimal IntentZ
+        decimal AccessQuantity
+        decimal PortQuantity
+        decimal PortBW
+        decimal AccessABW
+        decimal AccessZBW
+        decimal AccessASubBW
+        decimal AccessZSubBW
+        decimal TotalListMRC
+        decimal TotalDiscountedMRC
+        decimal TotalAmortizedMRC
+        decimal AccessListMRC
+        decimal AccessDiscountedMRC
+        decimal AccessAmortizedMRC
+        decimal TotalListNRC
+        decimal TotalAmortizedNRC
+        decimal AccessListNRC
+        decimal AccessAmortizedNRC
+        decimal GrossMargin
+        decimal TotalDiscountedMRCwAmortized
+        decimal AccessDiscountedMRCwAmortized
+        decimal TotalListMrcOriginal
+        decimal TotalCommit
+        decimal TotalIncrementalMRCost
+        decimal TotalIncrementalNRCost
+        decimal TotalIncrementalCapexCost
+        decimal AccessIncrementalMRCost
+        decimal AccessIncrementalNRCost
+        decimal AccessIncrementalCapexCost
+        decimal TotalTermRevenueUSD
+        decimal TotalTermEbitdaCostUSD
+        decimal TotalTermEbitdaDollarsUSD
+        decimal Payback
+        timestamp xact_timestamp
     }
 ```
 
@@ -118,10 +169,93 @@ erDiagram
 | **DIM_PRODUCT** | 9 | Product master with 5-tier hierarchy |
 | **DIM_CUSTOMER** | 26 | Customer/Account data from SFDC |
 | **DIM_OPPORTUNITY** | 27 | Sales opportunity data from SFDC |
-| **FACT_CONFIGURATION** | 4 | Key relationships (Bridge table) |
+| **FACT_CONFIGURATION** | 56 | Configuration with all metrics |
 
 ---
 
+## FACT_CONFIGURATION Column Details
+
+### Primary & Foreign Keys (4 columns)
+- ConfigurationId (PK)
+- ProductID (FK)
+- CustomerID (FK)
+- OpportunityID (FK)
+
+### Configuration Identifiers (6 columns)
+- PriceDealId
+- UnitCostId
+- LineNumber
+- SourceName
+- EXTERNALQUOTEID
+- PriceDealEntityProductItemId
+
+### Configuration Attributes (8 columns)
+- Term
+- PetraPricing
+- ColtIgnore
+- DQPID
+- Ignore
+- ReportRegion
+- Vendor
+- AccessType
+
+### Date Attributes (2 columns)
+- QuoteCreateDate
+- QuoteUpdateDate
+
+### Intent Metrics (2 columns)
+- IntentA
+- IntentZ
+
+### Quantity Metrics (7 columns)
+- AccessQuantity
+- PortQuantity
+- PortBW
+- AccessABW
+- AccessZBW
+- AccessASubBW
+- AccessZSubBW
+
+### Revenue Metrics - MRC (6 columns)
+- TotalListMRC
+- TotalDiscountedMRC
+- TotalAmortizedMRC
+- AccessListMRC
+- AccessDiscountedMRC
+- AccessAmortizedMRC
+
+### Revenue Metrics - NRC (4 columns)
+- TotalListNRC
+- TotalAmortizedNRC
+- AccessListNRC
+- AccessAmortizedNRC
+
+### Margin & Financial Metrics (5 columns)
+- GrossMargin
+- TotalDiscountedMRCwAmortized
+- AccessDiscountedMRCwAmortized
+- TotalListMrcOriginal
+- TotalCommit
+
+### Incremental Cost Metrics (6 columns)
+- TotalIncrementalMRCost
+- TotalIncrementalNRCost
+- TotalIncrementalCapexCost
+- AccessIncrementalMRCost
+- AccessIncrementalNRCost
+- AccessIncrementalCapexCost
+
+### Term Revenue & Payback (4 columns)
+- TotalTermRevenueUSD
+- TotalTermEbitdaCostUSD
+- TotalTermEbitdaDollarsUSD
+- Payback
+
+### Audit (1 column)
+- xact_timestamp
+
+---
+
+**Total Columns Across Schema**: 118  
 **Schema Type**: Snowflake Schema (Star Schema with normalized dimensions)  
-**Total Columns**: 66  
 **Last Updated**: 2026-06-04
