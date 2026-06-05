@@ -1,6 +1,6 @@
-# Data Warehouse ER Diagram - Final Production Schema v2.0
+# Data Warehouse ER Diagram - Final Production Schema v2.1
 
-## Complete Snowflake Schema (249 Columns) - Redesigned
+## Complete Snowflake Schema (247 Columns) - Redesigned
 
 ```mermaid
 erDiagram
@@ -185,8 +185,6 @@ erDiagram
         string SourceName
         string EXTERNALQUOTEID
         string PriceDealEntityProductItemId
-        string DealStatus
-        string DealState
         int Term
         string PetraPricing "Y/N"
         string PetraPromo
@@ -403,7 +401,7 @@ Opportunity dimension with composite key (OpportunityID + QuoteID) and denormali
 
 ---
 
-#### **FACT_CONFIGURATION** (107 Columns)
+#### **FACT_CONFIGURATION** (105 Columns)
 Central fact table with complete metrics, costs, and financial data
 
 **Keys (7 cols)**
@@ -416,8 +414,8 @@ Central fact table with complete metrics, costs, and financial data
 - LineNumber, SourceName, EXTERNALQUOTEID
 - PriceDealEntityProductItemId
 
-**Deal Info (8 cols)**
-- DealStatus, DealState, Term, PetraPricing (Y/N)
+**Deal Info (6 cols)** ✓ REMOVED: DealStatus, DealState
+- Term, PetraPricing (Y/N)
 - PetraPromo, ColtIgnore (Y/N), DQPID, Ignore (Y/N)
 
 **Location & Vendor (6 cols)**
@@ -483,8 +481,8 @@ Central fact table with complete metrics, costs, and financial data
 | Metric | Value |
 |--------|-------|
 | **Total Tables** | 5 |
-| **Total Columns** | 249 |
-| **Fact Columns** | 107 |
+| **Total Columns** | 247 |
+| **Fact Columns** | 105 |
 | **Dimension Columns** | 142 |
 | **Primary Keys** | 7 |
 | **Foreign Keys** | 7 |
@@ -505,7 +503,8 @@ Central fact table with complete metrics, costs, and financial data
 
 ---
 
-**Schema Version**: Production Ready v2.0  
-**Total Columns**: 249  
+**Schema Version**: Production Ready v2.1  
+**Total Columns**: 247 (Removed DealStatus, DealState)  
+**Fact Columns**: 105  
 **Last Updated**: 2026-06-05  
-**Status**: ✓ Approved for Production
+**Status**: ✓ Final Production Schema
