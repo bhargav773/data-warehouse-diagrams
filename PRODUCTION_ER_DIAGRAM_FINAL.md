@@ -1,6 +1,6 @@
-# Data Warehouse ER Diagram - Final Production Schema v2.1
+# Data Warehouse ER Diagram - Final Production Schema v2.2
 
-## Complete Snowflake Schema (247 Columns) - Redesigned
+## Complete Snowflake Schema (246 Columns) - Redesigned
 
 ```mermaid
 erDiagram
@@ -263,7 +263,6 @@ erDiagram
         string EmployeeCountry
         string OrganizationalUnit
         string FunctionDivision
-        string IsManaged
         decimal DiscountPercent
         string CurrencyCode
         string CSGResponse
@@ -401,7 +400,7 @@ Opportunity dimension with composite key (OpportunityID + QuoteID) and denormali
 
 ---
 
-#### **FACT_CONFIGURATION** (105 Columns)
+#### **FACT_CONFIGURATION** (104 Columns)
 Central fact table with complete metrics, costs, and financial data
 
 **Keys (7 cols)**
@@ -414,7 +413,7 @@ Central fact table with complete metrics, costs, and financial data
 - LineNumber, SourceName, EXTERNALQUOTEID
 - PriceDealEntityProductItemId
 
-**Deal Info (6 cols)** ✓ REMOVED: DealStatus, DealState
+**Deal Info (6 cols)**
 - Term, PetraPricing (Y/N)
 - PetraPromo, ColtIgnore (Y/N), DQPID, Ignore (Y/N)
 
@@ -461,9 +460,9 @@ Central fact table with complete metrics, costs, and financial data
 - TotalTermRevenueUSD, TotalTermEbitdaCostUSD
 - TotalTermEbitdaDollarsUSD, TotalTermVGMDollarsUSD
 
-**Employee & Business (7 cols)**
+**Employee & Business (6 cols)** ✓ REMOVED: IsManaged
 - EmployeeName, UserId, EmployeeRegion, EmployeeCountry
-- OrganizationalUnit, FunctionDivision, IsManaged
+- OrganizationalUnit, FunctionDivision
 
 **Miscellaneous (7 cols)**
 - DiscountPercent, CurrencyCode, CSGResponse
@@ -481,8 +480,8 @@ Central fact table with complete metrics, costs, and financial data
 | Metric | Value |
 |--------|-------|
 | **Total Tables** | 5 |
-| **Total Columns** | 247 |
-| **Fact Columns** | 105 |
+| **Total Columns** | 246 |
+| **Fact Columns** | 104 |
 | **Dimension Columns** | 142 |
 | **Primary Keys** | 7 |
 | **Foreign Keys** | 7 |
@@ -503,8 +502,8 @@ Central fact table with complete metrics, costs, and financial data
 
 ---
 
-**Schema Version**: Production Ready v2.1  
-**Total Columns**: 247 (Removed DealStatus, DealState)  
-**Fact Columns**: 105  
+**Schema Version**: Production Ready v2.2  
+**Total Columns**: 246 (Removed IsManaged)  
+**Fact Columns**: 104  
 **Last Updated**: 2026-06-05  
 **Status**: ✓ Final Production Schema
