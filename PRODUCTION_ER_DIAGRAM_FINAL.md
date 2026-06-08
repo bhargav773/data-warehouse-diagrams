@@ -1,4 +1,4 @@
-# Data Warehouse ER Diagram - Final Production Schema v3.1
+# Data Warehouse ER Diagram - Final Production Schema 
 
 ## Complete Snowflake Schema (Optimized) - Final
 
@@ -453,27 +453,7 @@ Central fact table with optimized metrics
 
 ---
 
-## Key Design Features v3.1
 
-### ✨ Schema Highlights:
-✅ **Industry Added** to DIM_CUSTOMER for better segmentation  
-✅ **Simplified Dimensions** - Only essential business attributes  
-✅ **Optimized Fact Table** - 67 columns with all necessary metrics  
-✅ **Denormalized Location A/Z** - Address data in FACT table for fast access  
-✅ **Product Tiers** - Included in FACT for configuration-level analysis  
-✅ **Composite Keys** - GLMLocId+LocationType, OpportunityID+QuoteID  
-✅ **Dual Location Support** - Separate A/Z references with complete attributes  
-
-### 🎯 Total Columns: 182
-- **DIM_PRODUCT**: 10
-- **DIM_LOCATION_ADDRESS**: 51
-- **DIM_CUSTOMER**: 24 (with Industry)
-- **DIM_OPPORTUNITY**: 30
-- **FACT_CONFIGURATION**: 67
-
----
-
-**Schema Version**: Production Ready v3.1  
 **Total Columns**: 182  
 **Last Updated**: 2026-06-08  
 **Status**: ✓ Final Production Schema - APPROVED
