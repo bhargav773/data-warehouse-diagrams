@@ -1,6 +1,6 @@
-# Data Warehouse ER Diagram - Final Production Schema v2.2
+# Data Warehouse ER Diagram - Corrected Final Production Schema v3.0
 
-## Complete Snowflake Schema (246 Columns) - Redesigned
+## Complete Snowflake Schema (Optimized) - Corrected
 
 ```mermaid
 erDiagram
@@ -13,7 +13,7 @@ erDiagram
 
     DIM_PRODUCT {
         string ProductID PK
-        string ProductName
+        string Product "ProductName"
         string ProductDescription
         string Tier1Product
         string Tier2Product
@@ -25,410 +25,359 @@ erDiagram
     }
 
     DIM_LOCATION_ADDRESS {
-        string GLMLocId PK
+        string GLMLocId PK "GLMLocIdA/Z"
         string LocationType PK "A or Z"
-        string LocationName
-        string Address
-        string City
-        string State
-        string PostalCode
-        string CountryCode
-        string Country
-        decimal Latitude
-        decimal Longitude
-        string GLMOriginalLocId
-        string ReportRegion
-        string RevenueCity
-        string RevenueState
-        string RevenueCountryCode
-        string AddressId "GLMShort"
-        string SiteId "GLMShort"
-        string StreetNumber "GLMShort"
-        string StreetNumberFraction "GLMShort"
-        string StreetDirectionPrefix "GLMShort"
-        string StreetName "GLMShort"
-        string StreetNameSuffix "GLMShort"
-        string StreetDirectionSuffix "GLMShort"
-        string AddressLine1 "GLMShort"
-        string CityGLM "GLMShort"
-        string StateGLM "GLMShort"
-        string PostalCodeGLM "GLMShort"
-        string CountryCodeGLM "GLMShort"
-        decimal LatitudeGLM "GLMShort"
-        decimal LongitudeGLM "GLMShort"
-        string ClonesCLLIPrefix "GLMShort"
-        string WireCenterCLLI "GLMShort"
-        string IsOnNet "GLMShort"
+        string LocationName "LocationNameA/Z"
+        string Address "AddressA/Z"
+        string City "CityA/Z"
+        string State "StateA/Z"
+        string PostalCode "PostalCodeA/Z"
+        string CountryCode "CountryCodeA/Z"
+        string Country "CountryA/Z"
+        decimal Latitude "LatitudeA/Z"
+        decimal Longitude "LongitudeA/Z"
+        string GLMOriginalLocId "GLMOriginalLocIdA/Z"
+        string ReportRegion "ReportRegionA/Z"
+        string RevenueCity "RevenueCityA/Z"
+        string RevenueState "RevenueStateA/Z"
+        string RevenueCountryCode "RevenueCountryCodeA/Z"
+        int ADDRESS_ID "GLMShort"
+        string SITE_ID "GLMShort"
+        string STREET_NUMBER "GLMShort"
+        string STREET_NUMBER_FRACTION "GLMShort"
+        string STREET_DIRECTION_PREFIX "GLMShort"
+        string STREET_NAME "GLMShort"
+        string STREET_NAME_SUFFIX "GLMShort"
+        string STREET_DIRECTION_SUFFIX "GLMShort"
+        string ADDRESS_LINE1 "GLMShort"
+        string CITY "GLMShort"
+        string STATE "GLMShort"
+        string POSTAL_CODE "GLMShort"
+        string COUNTRY_CODE "GLMShort"
+        decimal LATITUDE "GLMShort"
+        decimal LONGITUDE "GLMShort"
+        string CLONES_CLLI_PREFIX "GLMShort"
+        string WIRE_CENTER_CLLI "GLMShort"
+        string IS_ON_NET "GLMShort"
         string LocalAccess "GLMShort"
-        string PricingRegion "GLMShort"
-        string PricingSubRegion "GLMShort"
-        string PricingArea "GLMShort"
-        string EthernetAvailable "GLMShort"
-        string WaveAvailable "GLMShort"
-        string TDMAvailable "GLMShort"
-        string NetworkAvailable "GLMShort"
-        string BuildingStructure "GLMShort"
-        string BuildingProgram "GLMShort"
-        string OCNType "GLMShort"
-        string ConnectionType "GLMShort"
-        string SiteCompetitiveEnvironId "GLMShort"
-        string Metro3 "GLMShort"
-        string LumenNetwork "GLMShort"
-        timestamp GLMLoadTime "GLMShort"
+        string PRICINGREGION "GLMShort"
+        string PRICINGSUBREGION "GLMShort"
+        string PRICINGAREA "GLMShort"
+        string ETHERNET "GLMShort"
+        string WAVE "GLMShort"
+        string TDM "GLMShort"
+        string NETWORK "GLMShort"
+        string BULIDING_STRUCTURE "GLMShort"
+        string BUILDING_PROGRAM "GLMShort"
+        string OCN_TYPE "GLMShort"
+        string CONNECTION_TYPE "GLMShort"
+        int SITE_COMPETITIVE_ENVIRON_ID "GLMShort"
+        string METRO_3 "GLMShort"
+        string LUMEN_NETWORK "GLMShort"
+        string LOADTIME "GLMShort"
         timestamp xact_timestamp
     }
 
     DIM_CUSTOMER {
-        string CustomerID PK "AcctID"
-        string CompanyName "AcctNm"
-        string AcctType
-        string Industry
-        string BusOrg
-        string EntTargetGroupInCountry
-        string UltCustNm
-        string UltCustNbr
-        string CustEID
-        string DunsNbr
-        string ExtRptRollup
-        string AcctChannel
-        string AcctSubChannel
-        string MktVertical
-        string MktSubVertical
-        string TargetTier
-        string TargetGroup
-        string PricingTier
-        decimal GM
-        string SalesOffice
-        string BusinessSegment
-        string SalesRegion
-        string AcctOwnerFirstNm
-        string AcctOwnerLastNm
-        string AcctOwnerTitle
-        string AcctOwnerCUID
-        string AcctOwnerEmail
-        string AcctOwnerRegion
-        string AcctOwnerCountryCode
-        string AcctOwnerManager
-        string AcctOwnerDirector
+        string CustomerID PK "BusOrgID"
+        string CompanyName
+        string SfdcAcctNm
+        string SfdcAcctChannel
+        string SfdcAcctSubChannel
+        string SfdcMktVertical
+        string SfdcMktSubVertical
+        string SfdcTargetTier
+        string SfdcTargetGroup
+        string SfdcPricingTier
+        decimal SfdcGM
+        string SfdcSalesOffice
+        string SfdcAcctOwnerFirstNm
+        string SfdcAcctOwnerLastNm
+        string SfdcAcctOwnerTitle
+        string SfdcBusOrg
+        string SfdcUltCustNm
+        string SfdcUltCustNbr
+        string SfdcCustEID
+        string SfdcDunsNbr
+        string SfdcExtRptRollup
+        string SfdcBusinessSegment
+        string SfdcSalesRegion
         timestamp CreatedTimestamp
     }
 
     DIM_OPPORTUNITY {
-        string OpportunityID PK
-        string QuoteID PK "SMID"
-        string CustomerID FK
-        string OpportunityName
-        string RecordType
-        string StageName
-        string OpptyType
-        string OpptySubType
-        string CompetitorInfo
-        string IsHighImpactOpportunity
-        string HasOpportunityLineItem
-        string IsQuoted "Y/N"
-        string IsClosed "Y/N"
-        string IsWon "Y/N"
-        string IsActive "1=Yes"
-        string QuoteSystem "SFDC"
-        string ReasonWonLostComments
-        string PrimaryLostReason
-        string Competitor
-        string OpptyOwner
-        string OpptyOwnerDir
-        string SourcingAdvisor
-        string AcctNm
-        string AcctType
-        string BusOrg
-        string EntTargetGroupInCountry
-        string UltCustNm
-        string UltCustNbr
-        string CustEID
-        string DunsNbr
-        string ExtRptRollup
-        string AcctChannel
-        string AcctSubChannel
-        string MktVertical
-        string MktSubVertical
-        string TargetTier
-        string TargetGroup
-        string PricingTier
-        decimal GM
-        string SalesOffice
-        string BusinessSegment
-        string SalesRegion
-        date CreatedDate
-        date LastModifiedDate
-        date OpportunityCloseDate
-        date SendToOrderDate
-        decimal TotalNewSalesMRC_USD
-        decimal TotalNetRecurring_USD
-        decimal TotalNRC_USD
-        decimal TotalContractMRC_USD
-        decimal TotalYRC_USD
-        decimal TotalRevenue_USD
+        string OpportunityID PK "SfdcOpportunityID"
+        string QuoteID PK "SfdcSMID"
+        string CustomerID FK "SfdcAccountID"
+        string OpportunityName "SfdcOpportunityName"
+        string StageName "SfdcStageName"
+        string OpptySubType "SfdcSubType"
+        string IsClosed "SfdcIsClosed"
+        string IsWon "SfdcIsWon"
+        int IsActive "SfdcIsActive"
+        string QuoteSystem "SfdcSourceSystem"
+        string SalesClassification "SfdcSalesClassification"
+        string AcctNm "SfdcAcctNm"
+        string BusOrg "SfdcBusOrg"
+        string UltCustNm "SfdcUltCustNm"
+        string UltCustNbr "SfdcUltCustNbr"
+        string CustEID "SfdcCustEID"
+        string DunsNbr "SfdcDunsNbr"
+        string ExtRptRollup "SfdcExtRptRollup"
+        string AcctChannel "SfdcAcctChannel"
+        string AcctSubChannel "SfdcAcctSubChannel"
+        string MktVertical "SfdcMktVertical"
+        string MktSubVertical "SfdcMktSubVertical"
+        string TargetTier "SfdcTargetTier"
+        string TargetGroup "SfdcTargetGroup"
+        string PricingTier "SfdcPricingTier"
+        decimal GM "SfdcGM"
+        string SalesOffice "SfdcSalesOffice"
+        string SalesRegion "SfdcSalesRegion"
+        string BusinessSegment "SfdcBusinessSegment"
         timestamp CreatedTimestamp
     }
 
     FACT_CONFIGURATION {
         string ConfigurationId PK
-        string ProductID FK
-        string CustomerID FK
-        string OpportunityID FK
-        string QuoteID FK "Composite Key"
-        string LocationIdA FK "Type=A"
-        string LocationIdZ FK "Type=Z"
-        string OrderQuoteId
+        string ProductID FK "refs DIM_PRODUCT"
+        string BusOrgID FK "refs DIM_CUSTOMER"
+        string GLMLocIdA FK "refs DIM_LOCATION_ADDRESS(Type=A)"
+        string GLMLocIdZ FK "refs DIM_LOCATION_ADDRESS(Type=Z)"
         string PriceDealId
-        string SmEntityIdLink
         string UnitCostId
-        int LineNumber
-        string SourceName
-        string EXTERNALQUOTEID
-        string PriceDealEntityProductItemId
+        string ProductDescription
+        string DealState
         int Term
-        string PetraPricing "Y/N"
-        string PetraPromo
-        string ColtIgnore "Y/N"
-        string DQPID
-        string Ignore "Y/N"
-        string ReportRegionA
-        string ReportRegionZ
-        string AccessTypeA
-        string AccessTypeZ
-        string VendorA
-        string VendorZ
-        date ProposalSignedDate
-        date CreateDate
-        date UpdateDate
-        date QuoteCreateDate
-        date QuoteUpdateDate
-        decimal IntentA
-        decimal IntentZ
         decimal AccessQuantity
-        decimal PortQuantity
-        decimal PortBW
+        string CompanyName
+        string AddressA
+        string CityA
+        string StateA
+        string PostalCodeA
+        string CountryCodeA
+        string ReportRegionA
+        string AddressZ
+        string CityZ
+        string StateZ
+        string PostalCodeZ
+        string CountryCodeZ
+        string ReportRegionZ
         decimal AccessABW
         decimal AccessZBW
-        decimal AccessASubBW
-        decimal AccessZSubBW
+        decimal PortQuantity
+        decimal PortBW
+        string SourceSystem
+        decimal GrossMargin
+        decimal Payback
         decimal TotalListMRC
         decimal TotalDiscountedMRC
         decimal TotalAmortizedMRC
-        decimal AccessListMRC
-        decimal AccessDiscountedMRC
-        decimal AccessAmortizedMRC
         decimal TotalListNRC
         decimal TotalAmortizedNRC
-        decimal AccessListNRC
-        decimal AccessAmortizedNRC
-        decimal GrossMargin
-        decimal GrossMarginTarget
-        string IsGrossMarginSatisfied
-        decimal Payback
-        decimal PaybackTarget
-        string IsPaybackSatisfied
-        decimal ROI
-        decimal ROITarget
-        decimal TotalDiscountedMRCwAmortized
-        decimal AccessDiscountedMRCwAmortized
-        decimal TotalListMrcOriginal
-        decimal TotalCommit
-        decimal TotalMRCFloor1
-        decimal TotalMRCFloor2
-        decimal TotalMRCFloor3
-        decimal TotalNRCFloor1
-        decimal TotalNRCFloor2
-        decimal TotalNRCFloor3
-        decimal AccessMRCFloor1
-        decimal AccessMRCFloor2
-        decimal AccessMRCFloor3
-        decimal AccessNRCFloor1
-        decimal AccessNRCFloor2
-        decimal AccessNRCFloor3
         decimal TotalIncrementalMRCost
         decimal TotalIncrementalNRCost
         decimal TotalIncrementalCapexCost
+        string AccessTypeA
+        string AccessTypeZ
+        decimal AccessListMRC
+        decimal AccessDiscountedMRC
+        decimal AccessAmortizedMRC
+        decimal AccessListNRC
+        decimal AccessAmortizedNRC
         decimal AccessIncrementalMRCost
         decimal AccessIncrementalNRCost
         decimal AccessIncrementalCapexCost
-        decimal TotalMonthlyProfitUSD
-        decimal TotalInitialCashFlowUSD
         decimal TotalTermRevenueUSD
         decimal TotalTermEbitdaCostUSD
         decimal TotalTermEbitdaDollarsUSD
-        decimal TotalTermVGMDollarsUSD
-        string EmployeeName
-        string UserId
-        string EmployeeRegion
-        string EmployeeCountry
-        string OrganizationalUnit
-        string FunctionDivision
-        decimal DiscountPercent
         string CurrencyCode
-        string CSGResponse
-        string CalculationType
-        string CrossFunctionalUnitCode
-        string ChannelTypeId
-        string HasCAR
-        timestamp xact_timestamp
+        string EmployeeName
+        string Ignore "Y/N"
+        decimal AccessASubBW
+        decimal AccessZSubBW
+        string PriceDealEntityProductItemId
+        string VendorA
+        string VendorZ
+        int LineNumber
+        decimal TotalCommit
         string xact_username
-        string RecordStatus
-        date RecordModifiedDate
+        timestamp xact_timestamp
+        string SourceName
+        string EXTERNALQUOTEID
+        string PetraPricing "Y/N"
+        string ColtIgnore "Y/N"
+        string GLMOriginalLocIdA
+        string GLMOriginalLocIdZ
+        string DQPID
+        decimal IntentA
+        decimal IntentZ
+        string Tier1Product
+        string Tier2Product
+        string Tier3Product
+        string Tier4Product
+        string Tier5Product
+        decimal TotalDiscountedMRCwAmortized
+        decimal AccessDiscountedMRCwAmortized
+        date QuoteCreateDate
+        date QuoteUpdateDate
+        decimal TotalListMrcOriginal
     }
 ```
 
 ---
 
-## Production Schema Specification
+## Corrected Production Schema v3.0
 
-### Table Definitions
+### Schema Architecture - Key Changes
 
 #### **DIM_PRODUCT** (10 Columns)
-Product master dimension with 5-tier classification hierarchy
+Product master dimension with simplified naming
 
-| # | Column | Type | PK | Description |
-|---|--------|------|----|----|
-| 1 | ProductID | STRING | ✓ | Product identifier |
-| 2 | ProductName | STRING | | Product name |
-| 3 | ProductDescription | STRING | | Detailed description |
-| 4-8 | Tier1-5Product | STRING | | Hierarchy levels |
-| 9 | SourceSystem | STRING | | Source (PETRA/SFDC) |
-| 10 | xact_timestamp | TIMESTAMP | | Audit timestamp |
+| # | Column | Type | Description |
+|---|--------|------|-------------|
+| 1 | ProductID | STRING | Product identifier (PK) |
+| 2 | Product | STRING | ProductName |
+| 3 | ProductDescription | STRING | Detailed description |
+| 4-8 | Tier1-5Product | STRING | Hierarchy levels |
+| 9 | SourceSystem | STRING | Source system |
+| 10 | xact_timestamp | TIMESTAMP | Audit timestamp |
 
 ---
 
 #### **DIM_LOCATION_ADDRESS** (51 Columns)
-Location dimension with composite key (GLMLocId + LocationType) and complete GLMShort integration
+Location dimension with composite key (GLMLocId + LocationType) and denormalized A/Z attributes
 
-**Core Location Data (16 cols)**
-- GLMLocId, LocationType (Composite PK)
+**Core Location with A/Z Denormalization (16 cols)**
+- GLMLocId (Composite PK), LocationType (Composite PK)
 - LocationName, Address, City, State, PostalCode
 - CountryCode, Country, Latitude, Longitude
 - GLMOriginalLocId, ReportRegion
 - RevenueCity, RevenueState, RevenueCountryCode
 
-**GLMShort Street Data (8 cols)**
-- AddressId, SiteId, StreetNumber, StreetNumberFraction
-- StreetDirectionPrefix, StreetName, StreetNameSuffix, StreetDirectionSuffix
-- AddressLine1
+**GLMShort Street Data (9 cols)**
+- ADDRESS_ID, SITE_ID, STREET_NUMBER, STREET_NUMBER_FRACTION
+- STREET_DIRECTION_PREFIX, STREET_NAME, STREET_NAME_SUFFIX
+- STREET_DIRECTION_SUFFIX, ADDRESS_LINE1
 
 **GLMShort Geographic Data (5 cols)**
-- CityGLM, StateGLM, PostalCodeGLM, CountryCodeGLM
-- LatitudeGLM, LongitudeGLM
+- CITY, STATE, POSTAL_CODE, COUNTRY_CODE
+- LATITUDE, LONGITUDE
 
 **GLMShort Telecom Data (2 cols)**
-- ClonesCLLIPrefix, WireCenterCLLI
+- CLONES_CLLI_PREFIX, WIRE_CENTER_CLLI
 
 **GLMShort Network Capabilities (8 cols)**
-- IsOnNet, LocalAccess, EthernetAvailable, WaveAvailable
-- TDMAvailable, NetworkAvailable, BuildingStructure, BuildingProgram
+- IS_ON_NET, LocalAccess, ETHERNET, WAVE
+- TDM, NETWORK, BULIDING_STRUCTURE, BUILDING_PROGRAM
 
 **GLMShort Business Classifications (7 cols)**
-- PricingRegion, PricingSubRegion, PricingArea
-- OCNType, ConnectionType, SiteCompetitiveEnvironId
-- Metro3, LumenNetwork
+- PRICINGREGION, PRICINGSUBREGION, PRICINGAREA
+- OCN_TYPE, CONNECTION_TYPE, SITE_COMPETITIVE_ENVIRON_ID
+- METRO_3, LUMEN_NETWORK
 
 **Audit (2 cols)**
-- GLMLoadTime, xact_timestamp
+- LOADTIME, xact_timestamp
 
 ---
 
-#### **DIM_CUSTOMER** (32 Columns)
-Account master dimension with denormalized account owner information
+#### **DIM_CUSTOMER** (23 Columns)
+Account master dimension (simplified)
 
-**Core Account (10 cols)**
-- CustomerID (PK), CompanyName, AcctType, Industry
-- BusOrg, EntTargetGroupInCountry, UltCustNm, UltCustNbr
-- CustEID, DunsNbr, ExtRptRollup
+**Core Account (1 col)**
+- CustomerID (PK) "BusOrgID"
 
-**Account Classification (11 cols)**
-- AcctChannel, AcctSubChannel, MktVertical, MktSubVertical
-- TargetTier, TargetGroup, PricingTier, GM
-- SalesOffice, BusinessSegment, SalesRegion
+**Company Info (2 cols)**
+- CompanyName, SfdcAcctNm
 
-**Account Owner (10 cols)**
-- AcctOwnerFirstNm, AcctOwnerLastNm, AcctOwnerTitle
-- AcctOwnerCUID, AcctOwnerEmail, AcctOwnerRegion
-- AcctOwnerCountryCode, AcctOwnerManager, AcctOwnerDirector
+**Account Classification (8 cols)**
+- SfdcAcctChannel, SfdcAcctSubChannel
+- SfdcMktVertical, SfdcMktSubVertical
+- SfdcTargetTier, SfdcTargetGroup
+- SfdcPricingTier, SfdcGM
+
+**Account Office & Region (2 cols)**
+- SfdcSalesOffice, SfdcSalesRegion
+
+**Account Owner (3 cols)**
+- SfdcAcctOwnerFirstNm, SfdcAcctOwnerLastNm
+- SfdcAcctOwnerTitle
+
+**Business Organization (5 cols)**
+- SfdcBusOrg, SfdcUltCustNm, SfdcUltCustNbr
+- SfdcCustEID, SfdcDunsNbr
+
+**Miscellaneous (2 cols)**
+- SfdcExtRptRollup, SfdcBusinessSegment
 
 **Audit (1 col)**
 - CreatedTimestamp
 
 ---
 
-#### **DIM_OPPORTUNITY** (50 Columns)
-Opportunity dimension with composite key (OpportunityID + QuoteID) and denormalized account data
+#### **DIM_OPPORTUNITY** (30 Columns)
+Opportunity dimension with composite key (OpportunityID + QuoteID)
 
 **Primary Keys (2 cols)**
-- OpportunityID (PK), QuoteID (PK - "SMID")
+- OpportunityID (PK) "SfdcOpportunityID"
+- QuoteID (PK) "SfdcSMID"
 
 **Foreign Keys (1 col)**
-- CustomerID (FK)
+- CustomerID (FK) "SfdcAccountID"
 
 **Opportunity Info (8 cols)**
-- OpportunityName, RecordType, StageName, OpptyType
-- OpptySubType, CompetitorInfo, IsHighImpactOpportunity
-- HasOpportunityLineItem
-
-**Status Flags (5 cols)**
-- IsQuoted (Y/N), IsClosed (Y/N), IsWon (Y/N)
-- IsActive (1=Yes), QuoteSystem (SFDC)
-
-**Win/Loss Info (3 cols)**
-- ReasonWonLostComments, PrimaryLostReason, Competitor
-
-**Opportunity Owner (3 cols)**
-- OpptyOwner, OpptyOwnerDir, SourcingAdvisor
+- OpportunityName, StageName, OpptySubType
+- IsClosed, IsWon, IsActive
+- QuoteSystem, SalesClassification
 
 **Denormalized Account Data (18 cols)**
-- AcctNm, AcctType, BusOrg, EntTargetGroupInCountry
-- UltCustNm, UltCustNbr, CustEID, DunsNbr, ExtRptRollup
-- AcctChannel, AcctSubChannel, MktVertical, MktSubVertical
-- TargetTier, TargetGroup, PricingTier, GM
-- SalesOffice, BusinessSegment, SalesRegion
-
-**Financial Metrics (6 cols)**
-- TotalNewSalesMRC_USD, TotalNetRecurring_USD, TotalNRC_USD
-- TotalContractMRC_USD, TotalYRC_USD, TotalRevenue_USD
-
-**Dates (4 cols)**
-- CreatedDate, LastModifiedDate, OpportunityCloseDate
-- SendToOrderDate
+- AcctNm, BusOrg, UltCustNm, UltCustNbr
+- CustEID, DunsNbr, ExtRptRollup
+- AcctChannel, AcctSubChannel
+- MktVertical, MktSubVertical
+- TargetTier, TargetGroup, PricingTier
+- GM, SalesOffice, SalesRegion, BusinessSegment
 
 **Audit (1 col)**
 - CreatedTimestamp
 
 ---
 
-#### **FACT_CONFIGURATION** (104 Columns)
-Central fact table with complete metrics, costs, and financial data
+#### **FACT_CONFIGURATION** (67 Columns)
+Central fact table with optimized metrics
 
-**Keys (7 cols)**
+**Keys (4 cols)**
 - ConfigurationId (PK)
-- ProductID, CustomerID, OpportunityID, QuoteID (FK - Composite)
-- LocationIdA (FK - Type=A), LocationIdZ (FK - Type=Z)
+- ProductID (FK → DIM_PRODUCT)
+- BusOrgID (FK → DIM_CUSTOMER)
+- GLMLocIdA, GLMLocIdZ (FK → DIM_LOCATION_ADDRESS)
 
-**Configuration IDs (8 cols)**
-- OrderQuoteId, PriceDealId, SmEntityIdLink, UnitCostId
-- LineNumber, SourceName, EXTERNALQUOTEID
-- PriceDealEntityProductItemId
+**Configuration & Deal (10 cols)**
+- PriceDealId, UnitCostId, ProductDescription
+- DealState, Term, PriceDealEntityProductItemId
+- LineNumber, SourceName, EXTERNALQUOTEID, DQPID
 
-**Deal Info (6 cols)**
-- Term, PetraPricing (Y/N)
-- PetraPromo, ColtIgnore (Y/N), DQPID, Ignore (Y/N)
+**Product Hierarchy (5 cols)**
+- Tier1Product, Tier2Product, Tier3Product
+- Tier4Product, Tier5Product
 
-**Location & Vendor (6 cols)**
-- ReportRegionA, ReportRegionZ
-- AccessTypeA, AccessTypeZ
-- VendorA, VendorZ
+**Location Data - A (6 cols)**
+- AddressA, CityA, StateA, PostalCodeA
+- CountryCodeA, ReportRegionA
 
-**Dates (5 cols)**
-- ProposalSignedDate, CreateDate, UpdateDate
-- QuoteCreateDate, QuoteUpdateDate
+**Location Data - Z (6 cols)**
+- AddressZ, CityZ, StateZ, PostalCodeZ
+- CountryCodeZ, ReportRegionZ
 
-**Intent & Quantity (9 cols)**
-- IntentA, IntentZ, AccessQuantity, PortQuantity, PortBW
-- AccessABW, AccessZBW, AccessASubBW, AccessZSubBW
+**Customer/Company (2 cols)**
+- CompanyName, SourceSystem
+
+**Access & Port Quantities (6 cols)**
+- AccessQuantity, AccessABW, AccessZBW
+- AccessASubBW, AccessZSubBW, PortQuantity, PortBW
+
+**Vendor & Access Type (4 cols)**
+- VendorA, VendorZ, AccessTypeA, AccessTypeZ
 
 **Revenue - MRC (6 cols)**
 - TotalListMRC, TotalDiscountedMRC, TotalAmortizedMRC
@@ -438,16 +387,10 @@ Central fact table with complete metrics, costs, and financial data
 - TotalListNRC, TotalAmortizedNRC
 - AccessListNRC, AccessAmortizedNRC
 
-**Margins & Financial KPIs (12 cols)**
-- GrossMargin, GrossMarginTarget, IsGrossMarginSatisfied
-- Payback, PaybackTarget, IsPaybackSatisfied
-- ROI, ROITarget
-- TotalDiscountedMRCwAmortized, AccessDiscountedMRCwAmortized
-- TotalListMrcOriginal, TotalCommit
-
-**Floor Pricing (12 cols)**
-- TotalMRCFloor1-3, TotalNRCFloor1-3
-- AccessMRCFloor1-3, AccessNRCFloor1-3
+**Financial Metrics (6 cols)**
+- GrossMargin, Payback, TotalCommit
+- TotalListMrcOriginal, TotalDiscountedMRCwAmortized
+- AccessDiscountedMRCwAmortized
 
 **Incremental Costs (6 cols)**
 - TotalIncrementalMRCost, TotalIncrementalNRCost
@@ -455,23 +398,23 @@ Central fact table with complete metrics, costs, and financial data
 - AccessIncrementalMRCost, AccessIncrementalNRCost
 - AccessIncrementalCapexCost
 
-**Term Revenue (6 cols)**
-- TotalMonthlyProfitUSD, TotalInitialCashFlowUSD
+**Term Revenue (3 cols)**
 - TotalTermRevenueUSD, TotalTermEbitdaCostUSD
-- TotalTermEbitdaDollarsUSD, TotalTermVGMDollarsUSD
+- TotalTermEbitdaDollarsUSD
 
-**Employee & Business (6 cols)** ✓ REMOVED: IsManaged
-- EmployeeName, UserId, EmployeeRegion, EmployeeCountry
-- OrganizationalUnit, FunctionDivision
+**Intent Metrics (2 cols)**
+- IntentA, IntentZ
 
-**Miscellaneous (7 cols)**
-- DiscountPercent, CurrencyCode, CSGResponse
-- CalculationType, CrossFunctionalUnitCode, ChannelTypeId
-- HasCAR
+**Flags & Classifications (5 cols)**
+- PetraPricing (Y/N), ColtIgnore (Y/N), Ignore (Y/N)
+- GLMOriginalLocIdA, GLMOriginalLocIdZ
 
-**Audit (4 cols)**
-- xact_timestamp, xact_username, RecordStatus
-- RecordModifiedDate
+**Employee & Audit (5 cols)**
+- EmployeeName, CurrencyCode
+- xact_username, xact_timestamp
+
+**Dates (2 cols)**
+- QuoteCreateDate, QuoteUpdateDate
 
 ---
 
@@ -479,13 +422,16 @@ Central fact table with complete metrics, costs, and financial data
 
 | Metric | Value |
 |--------|-------|
-| **Total Tables** | 5 |
-| **Total Columns** | 246 |
-| **Fact Columns** | 104 |
-| **Dimension Columns** | 142 |
-| **Primary Keys** | 7 |
-| **Foreign Keys** | 7 |
-| **Composite Keys** | 3 |
+| **Total Tables** | 4 |
+| **DIM_PRODUCT** | 10 columns |
+| **DIM_LOCATION_ADDRESS** | 51 columns |
+| **DIM_CUSTOMER** | 23 columns |
+| **DIM_OPPORTUNITY** | 30 columns |
+| **FACT_CONFIGURATION** | 67 columns |
+| **Total Columns** | 181 |
+| **Primary Keys** | 5 |
+| **Foreign Keys** | 4 |
+| **Composite Keys** | 2 |
 
 ---
 
@@ -498,12 +444,30 @@ Central fact table with complete metrics, costs, and financial data
 | DIM_LOCATION_ADDRESS → FACT_CONFIGURATION (Z) | 1:M | One location (Type=Z) → Many configs |
 | DIM_CUSTOMER → FACT_CONFIGURATION | M:1 | Many configs → One customer |
 | DIM_CUSTOMER → DIM_OPPORTUNITY | 1:M | One customer → Many opportunities |
-| DIM_OPPORTUNITY → FACT_CONFIGURATION | M:1 | Many configs → One opportunity (composite) |
+| DIM_OPPORTUNITY → FACT_CONFIGURATION | M:1 | Many configs → One opportunity |
 
 ---
 
-**Schema Version**: Production Ready v2.2  
-**Total Columns**: 246 (Removed IsManaged)  
-**Fact Columns**: 104  
+## Key Design Improvements v3.0
+
+### ✨ Major Changes:
+✅ **Simplified DIM_CUSTOMER** (32 → 23 columns) - Prefixed with "Sfdc" for clarity  
+✅ **Simplified DIM_OPPORTUNITY** (50 → 30 columns) - Only essential denormalized fields  
+✅ **Optimized FACT_CONFIGURATION** (104 → 67 columns) - Removed redundant fields  
+✅ **Denormalized Location A/Z** - Address data in FACT table for fast access  
+✅ **Product Tier Columns** - Moved to FACT for configuration-level analysis  
+✅ **Total Schema**: 181 columns (down from 246)  
+
+### 🎯 Design Rationale:
+- **Fact Table Optimization**: Includes location attributes and product tiers for direct analysis
+- **Denormalized Location**: AddressA/Z, CityA/Z, etc. for efficient queries
+- **Simpler Dimensions**: Only core business attributes in dimensions
+- **Composite Keys**: GLMLocId+LocationType, OpportunityID+QuoteID
+- **Dual Location Support**: Separate A/Z references with attributes
+
+---
+
+**Schema Version**: Production Ready v3.0  
+**Total Columns**: 181  
 **Last Updated**: 2026-06-05  
-**Status**: ✓ Final Production Schema
+**Status**: ✓ Corrected & Optimized Production Schema
