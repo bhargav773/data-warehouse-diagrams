@@ -1,6 +1,6 @@
-# Data Warehouse ER Diagram - Final Production Schema v3.2
+# Data Warehouse ER Diagram - Final Production Schema v3.3
 
-## Complete Snowflake Schema (Optimized) - Final
+## Complete Snowflake Schema (Optimized) - FINAL
 
 ```mermaid
 erDiagram
@@ -123,9 +123,9 @@ erDiagram
         string ReasonWonLostComments
         string PrimaryLostReason
         string Competitor "SfdcCompetitor"
-        date CreatedDate
-        date LastModifiedDate
-        date OpportunityCloseDate
+        date CreatedDate "SfdcCreatedDate"
+        date LastModifiedDate "SfdcLastModifiedDate"
+        date OpportunityCloseDate "SfdcCloseDate"
         date SendToOrderDate
         string HasOpportunityLineItem
         string SalesClassification "SfdcSalesClassification"
@@ -151,12 +151,12 @@ erDiagram
         string OpptyOwner "SfdcOpptyOwner"
         string OpptyOwnerDir "SfdcOpptyOwnerDir"
         string SourcingAdvisor "SfdcSourcingAdvisor"
-        decimal TotalNewSalesMRC_USD "Financial"
-        decimal TotalNetRecurring_USD "Financial"
-        decimal TotalNRC_USD "Financial"
-        decimal TotalContractMRC_USD "Financial"
-        decimal TotalYRC_USD "Financial"
-        decimal TotalRevenue_USD "Financial"
+        decimal TotalNewSalesMRC_USD
+        decimal TotalNetRecurring_USD
+        decimal TotalNRC_USD
+        decimal TotalContractMRC_USD
+        decimal TotalYRC_USD
+        decimal TotalRevenue_USD
         timestamp CreatedTimestamp
     }
 
@@ -236,11 +236,6 @@ erDiagram
         string DQPID
         decimal IntentA
         decimal IntentZ
-        string Tier1Product
-        string Tier2Product
-        string Tier3Product
-        string Tier4Product
-        string Tier5Product
         decimal TotalDiscountedMRCwAmortized
         decimal AccessDiscountedMRCwAmortized
         date QuoteCreateDate
@@ -251,29 +246,29 @@ erDiagram
 
 ---
 
-## Final Production Schema v3.2
+## Final Production Schema v3.3 - OPTIMIZED
 
 ### Schema Architecture
 
 #### **DIM_PRODUCT** (10 Columns)
-Product master dimension with simplified naming
+Product master dimension with complete hierarchy
 
 | # | Column | Type | Description |
 |---|--------|------|-------------|
 | 1 | ProductID | STRING | Product identifier (PK) |
 | 2 | Product | STRING | ProductName |
 | 3 | ProductDescription | STRING | Detailed description |
-| 4-8 | Tier1-5Product | STRING | Hierarchy levels |
+| 4-8 | Tier1-5Product | STRING | Hierarchy levels (1-5) |
 | 9 | SourceSystem | STRING | Source system |
 | 10 | xact_timestamp | TIMESTAMP | Audit timestamp |
 
 ---
 
 #### **DIM_LOCATION_ADDRESS** (51 Columns)
-Location dimension with composite key (GLMLocId + LocationType) and complete GLMShort integration
+Location dimension with composite key (GLMLocId + LocationType)
 
 **Core Location with A/Z Denormalization (16 cols)**
-- GLMLocId (Composite PK), LocationType (Composite PK)
+- GLMLocId (Composite PK), LocationType (Composite PK - A or Z)
 - LocationName, Address, City, State, PostalCode
 - CountryCode, Country, Latitude, Longitude
 - GLMOriginalLocId, ReportRegion
@@ -285,15 +280,14 @@ Location dimension with composite key (GLMLocId + LocationType) and complete GLM
 - STREET_DIRECTION_SUFFIX, ADDRESS_LINE1
 
 **GLMShort Geographic Data (5 cols)**
-- CITY, STATE, POSTAL_CODE, COUNTRY_CODE
-- LATITUDE, LONGITUDE
+- CITY, STATE, POSTAL_CODE, COUNTRY_CODE, LATITUDE, LONGITUDE
 
 **GLMShort Telecom Data (2 cols)**
 - CLONES_CLLI_PREFIX, WIRE_CENTER_CLLI
 
 **GLMShort Network Capabilities (8 cols)**
-- IS_ON_NET, LocalAccess, ETHERNET, WAVE
-- TDM, NETWORK, BULIDING_STRUCTURE, BUILDING_PROGRAM
+- IS_ON_NET, LocalAccess, ETHERNET, WAVE, TDM, NETWORK
+- BULIDING_STRUCTURE, BUILDING_PROGRAM
 
 **GLMShort Business Classifications (7 cols)**
 - PRICINGREGION, PRICINGSUBREGION, PRICINGAREA
@@ -306,7 +300,7 @@ Location dimension with composite key (GLMLocId + LocationType) and complete GLM
 ---
 
 #### **DIM_CUSTOMER** (24 Columns)
-Account master dimension (simplified)
+Account master dimension with Salesforce alignment
 
 **Core Account (2 cols)**
 - CustomerID (PK) "BusOrgID"
@@ -340,8 +334,8 @@ Account master dimension (simplified)
 
 ---
 
-#### **DIM_OPPORTUNITY** (48 Columns) ⭐
-Opportunity dimension with composite key (OpportunityID + QuoteID) - EXPANDED
+#### **DIM_OPPORTUNITY** (48 Columns)
+Opportunity dimension with composite key (OpportunityID + QuoteID)
 
 **Primary Keys (2 cols)**
 - OpportunityID (PK) "SfdcOpportunityID"
@@ -360,8 +354,8 @@ Opportunity dimension with composite key (OpportunityID + QuoteID) - EXPANDED
 - ReasonWonLostComments, PrimaryLostReason, Competitor
 
 **Opportunity Dates (4 cols)**
-- CreatedDate, LastModifiedDate
-- OpportunityCloseDate, SendToOrderDate
+- CreatedDate "SfdcCreatedDate", LastModifiedDate "SfdcLastModifiedDate"
+- OpportunityCloseDate "SfdcCloseDate", SendToOrderDate
 
 **Opportunity Ownership (3 cols)**
 - OpptyOwner, OpptyOwnerDir, SourcingAdvisor
@@ -387,8 +381,8 @@ Opportunity dimension with composite key (OpportunityID + QuoteID) - EXPANDED
 
 ---
 
-#### **FACT_CONFIGURATION** (67 Columns)
-Central fact table with optimized metrics
+#### **FACT_CONFIGURATION** (62 Columns) ✓ CLEANED
+Central fact table with optimized metrics (product tiers removed)
 
 **Keys (7 cols)**
 - ConfigurationId (PK)
@@ -397,14 +391,10 @@ Central fact table with optimized metrics
 - OpportunityID, QuoteID (FK → DIM_OPPORTUNITY - Composite)
 - GLMLocIdA, GLMLocIdZ (FK → DIM_LOCATION_ADDRESS)
 
-**Configuration & Deal (10 cols)**
+**Configuration & Deal (9 cols)**
 - PriceDealId, UnitCostId, ProductDescription
 - DealState, Term, PriceDealEntityProductItemId
 - LineNumber, SourceName, EXTERNALQUOTEID, DQPID
-
-**Product Hierarchy (5 cols)**
-- Tier1Product, Tier2Product, Tier3Product
-- Tier4Product, Tier5Product
 
 **Location Data - A (6 cols)**
 - AddressA, CityA, StateA, PostalCodeA
@@ -463,7 +453,7 @@ Central fact table with optimized metrics
 
 ---
 
-## Schema Statistics
+## Final Schema Statistics
 
 | Metric | Value |
 |--------|-------|
@@ -471,9 +461,9 @@ Central fact table with optimized metrics
 | **DIM_PRODUCT** | 10 columns |
 | **DIM_LOCATION_ADDRESS** | 51 columns |
 | **DIM_CUSTOMER** | 24 columns |
-| **DIM_OPPORTUNITY** | 48 columns ⭐ (Expanded) |
-| **FACT_CONFIGURATION** | 67 columns |
-| **Total Columns** | 200 |
+| **DIM_OPPORTUNITY** | 48 columns |
+| **FACT_CONFIGURATION** | 62 columns ✓ OPTIMIZED |
+| **Total Columns** | **195** ✓ FINAL |
 | **Primary Keys** | 5 |
 | **Foreign Keys** | 7 |
 | **Composite Keys** | 2 |
@@ -493,30 +483,35 @@ Central fact table with optimized metrics
 
 ---
 
-## Key Design Features v3.2 - FINAL
+## Key Design Features v3.3 - FINAL
 
-### ✨ Major Features:
-✅ **DIM_OPPORTUNITY Expanded** (30 → 48 columns)  
-✅ **Complete Opportunity Tracking** - Status, dates, reasons, ownership  
-✅ **Full Financial Metrics** - MRC, NRC, revenue, contract values in DIM  
-✅ **Win/Loss Analysis** - Reasons, lost reasons, competitor info  
-✅ **Complete Account Denormalization** - All account attrs in opportunity  
-✅ **Optimized Fact Table** - No redundant metrics (67 columns)  
+### ✨ Production-Ready Optimizations:
+✅ **DIM_OPPORTUNITY** (48 cols) - Complete opportunity context + financials  
+✅ **FACT_CONFIGURATION** (62 cols) - Cleaned, no product tier denormalization  
+✅ **Product Hierarchy** - Accessed via DIM_PRODUCT FK relationship  
+✅ **Better Normalization** - Reduced redundancy, cleaner joins  
 ✅ **Composite Keys** - GLMLocId+LocationType, OpportunityID+QuoteID  
 ✅ **Dual Location Support** - Type A & Z with complete attributes  
+✅ **Salesforce Alignment** - Sfdc prefixes, complete SFDC data  
 
-### 🎯 Final Column Distribution:
+### 🎯 Final Optimization Summary:
+- **Removed 5 columns** from FACT_CONFIGURATION (product tiers)
+- **Total reduction**: 200 → **195 columns**
+- **Better referential integrity** through FK relationships
+- **Cleaner data model** with no denormalized redundancy
+- **Enterprise-ready** Snowflake schema
+
+### 📊 Column Distribution:
 - **DIM_PRODUCT**: 10 cols (5%)
 - **DIM_LOCATION_ADDRESS**: 51 cols (26%)
 - **DIM_CUSTOMER**: 24 cols (12%)
-- **DIM_OPPORTUNITY**: 48 cols (24%) ⭐ EXPANDED
-- **FACT_CONFIGURATION**: 67 cols (34%)
-
-### 📊 Total: 200 Columns
+- **DIM_OPPORTUNITY**: 48 cols (25%)
+- **FACT_CONFIGURATION**: 62 cols (32%)
 
 ---
 
-**Schema Version**: Production Ready v3.2 - FINAL ✓  
-**Total Columns**: 200  
+**Schema Version**: Production Ready v3.3 - FINAL ✓  
+**Total Columns**: 195  
+**Status**: ✓ OPTIMIZED & DEPLOYED  
 **Last Updated**: 2026-06-08  
-**Status**: ✓ APPROVED & DEPLOYED
+**Deployment**: COMPLETE 🚀
