@@ -1,4 +1,4 @@
-# Data Warehouse ER Diagram - Final Production Schema v3.3
+# Data Warehouse ER Diagram - 
 
 ## Complete Snowflake Schema (Optimized) - FINAL
 
@@ -483,35 +483,4 @@ Central fact table with optimized metrics (product tiers removed)
 
 ---
 
-## Key Design Features v3.3 - FINAL
 
-### ✨ Production-Ready Optimizations:
-✅ **DIM_OPPORTUNITY** (48 cols) - Complete opportunity context + financials  
-✅ **FACT_CONFIGURATION** (62 cols) - Cleaned, no product tier denormalization  
-✅ **Product Hierarchy** - Accessed via DIM_PRODUCT FK relationship  
-✅ **Better Normalization** - Reduced redundancy, cleaner joins  
-✅ **Composite Keys** - GLMLocId+LocationType, OpportunityID+QuoteID  
-✅ **Dual Location Support** - Type A & Z with complete attributes  
-✅ **Salesforce Alignment** - Sfdc prefixes, complete SFDC data  
-
-### 🎯 Final Optimization Summary:
-- **Removed 5 columns** from FACT_CONFIGURATION (product tiers)
-- **Total reduction**: 200 → **195 columns**
-- **Better referential integrity** through FK relationships
-- **Cleaner data model** with no denormalized redundancy
-- **Enterprise-ready** Snowflake schema
-
-### 📊 Column Distribution:
-- **DIM_PRODUCT**: 10 cols (5%)
-- **DIM_LOCATION_ADDRESS**: 51 cols (26%)
-- **DIM_CUSTOMER**: 24 cols (12%)
-- **DIM_OPPORTUNITY**: 48 cols (25%)
-- **FACT_CONFIGURATION**: 62 cols (32%)
-
----
-
-**Schema Version**: Production Ready v3.3 - FINAL ✓  
-**Total Columns**: 195  
-**Status**: ✓ OPTIMIZED & DEPLOYED  
-**Last Updated**: 2026-06-08  
-**Deployment**: COMPLETE 🚀
