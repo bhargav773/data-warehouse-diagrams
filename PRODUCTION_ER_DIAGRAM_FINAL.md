@@ -1,6 +1,6 @@
-# Data Warehouse ER Diagram - Corrected Final Production Schema v3.0
+# Data Warehouse ER Diagram - Final Production Schema v3.1
 
-## Complete Snowflake Schema (Optimized) - Corrected
+## Complete Snowflake Schema (Optimized) - Final
 
 ```mermaid
 erDiagram
@@ -81,6 +81,7 @@ erDiagram
     DIM_CUSTOMER {
         string CustomerID PK "BusOrgID"
         string CompanyName
+        string Industry
         string SfdcAcctNm
         string SfdcAcctChannel
         string SfdcAcctSubChannel
@@ -142,6 +143,8 @@ erDiagram
         string ConfigurationId PK
         string ProductID FK "refs DIM_PRODUCT"
         string BusOrgID FK "refs DIM_CUSTOMER"
+        string OpportunityID FK "Composite Key"
+        string QuoteID FK "Composite Key"
         string GLMLocIdA FK "refs DIM_LOCATION_ADDRESS(Type=A)"
         string GLMLocIdZ FK "refs DIM_LOCATION_ADDRESS(Type=Z)"
         string PriceDealId
@@ -227,9 +230,9 @@ erDiagram
 
 ---
 
-## Corrected Production Schema v3.0
+## Final Production Schema v3.1
 
-### Schema Architecture - Key Changes
+### Schema Architecture
 
 #### **DIM_PRODUCT** (10 Columns)
 Product master dimension with simplified naming
@@ -246,7 +249,7 @@ Product master dimension with simplified naming
 ---
 
 #### **DIM_LOCATION_ADDRESS** (51 Columns)
-Location dimension with composite key (GLMLocId + LocationType) and denormalized A/Z attributes
+Location dimension with composite key (GLMLocId + LocationType) and complete GLMShort integration
 
 **Core Location with A/Z Denormalization (16 cols)**
 - GLMLocId (Composite PK), LocationType (Composite PK)
@@ -281,14 +284,15 @@ Location dimension with composite key (GLMLocId + LocationType) and denormalized
 
 ---
 
-#### **DIM_CUSTOMER** (23 Columns)
+#### **DIM_CUSTOMER** (24 Columns)
 Account master dimension (simplified)
 
-**Core Account (1 col)**
+**Core Account (2 cols)**
 - CustomerID (PK) "BusOrgID"
+- CompanyName
 
-**Company Info (2 cols)**
-- CompanyName, SfdcAcctNm
+**Industry Classification (1 col)** ⭐
+- Industry
 
 **Account Classification (8 cols)**
 - SfdcAcctChannel, SfdcAcctSubChannel
@@ -346,10 +350,11 @@ Opportunity dimension with composite key (OpportunityID + QuoteID)
 #### **FACT_CONFIGURATION** (67 Columns)
 Central fact table with optimized metrics
 
-**Keys (4 cols)**
+**Keys (7 cols)**
 - ConfigurationId (PK)
 - ProductID (FK → DIM_PRODUCT)
 - BusOrgID (FK → DIM_CUSTOMER)
+- OpportunityID, QuoteID (FK → DIM_OPPORTUNITY - Composite)
 - GLMLocIdA, GLMLocIdZ (FK → DIM_LOCATION_ADDRESS)
 
 **Configuration & Deal (10 cols)**
@@ -425,12 +430,12 @@ Central fact table with optimized metrics
 | **Total Tables** | 4 |
 | **DIM_PRODUCT** | 10 columns |
 | **DIM_LOCATION_ADDRESS** | 51 columns |
-| **DIM_CUSTOMER** | 23 columns |
+| **DIM_CUSTOMER** | 24 columns ⭐ (Added Industry) |
 | **DIM_OPPORTUNITY** | 30 columns |
 | **FACT_CONFIGURATION** | 67 columns |
-| **Total Columns** | 181 |
+| **Total Columns** | 182 |
 | **Primary Keys** | 5 |
-| **Foreign Keys** | 4 |
+| **Foreign Keys** | 7 |
 | **Composite Keys** | 2 |
 
 ---
@@ -444,30 +449,31 @@ Central fact table with optimized metrics
 | DIM_LOCATION_ADDRESS → FACT_CONFIGURATION (Z) | 1:M | One location (Type=Z) → Many configs |
 | DIM_CUSTOMER → FACT_CONFIGURATION | M:1 | Many configs → One customer |
 | DIM_CUSTOMER → DIM_OPPORTUNITY | 1:M | One customer → Many opportunities |
-| DIM_OPPORTUNITY → FACT_CONFIGURATION | M:1 | Many configs → One opportunity |
+| DIM_OPPORTUNITY → FACT_CONFIGURATION | M:1 | Many configs → One opportunity (composite) |
 
 ---
 
-## Key Design Improvements v3.0
+## Key Design Features v3.1
 
-### ✨ Major Changes:
-✅ **Simplified DIM_CUSTOMER** (32 → 23 columns) - Prefixed with "Sfdc" for clarity  
-✅ **Simplified DIM_OPPORTUNITY** (50 → 30 columns) - Only essential denormalized fields  
-✅ **Optimized FACT_CONFIGURATION** (104 → 67 columns) - Removed redundant fields  
+### ✨ Schema Highlights:
+✅ **Industry Added** to DIM_CUSTOMER for better segmentation  
+✅ **Simplified Dimensions** - Only essential business attributes  
+✅ **Optimized Fact Table** - 67 columns with all necessary metrics  
 ✅ **Denormalized Location A/Z** - Address data in FACT table for fast access  
-✅ **Product Tier Columns** - Moved to FACT for configuration-level analysis  
-✅ **Total Schema**: 181 columns (down from 246)  
+✅ **Product Tiers** - Included in FACT for configuration-level analysis  
+✅ **Composite Keys** - GLMLocId+LocationType, OpportunityID+QuoteID  
+✅ **Dual Location Support** - Separate A/Z references with complete attributes  
 
-### 🎯 Design Rationale:
-- **Fact Table Optimization**: Includes location attributes and product tiers for direct analysis
-- **Denormalized Location**: AddressA/Z, CityA/Z, etc. for efficient queries
-- **Simpler Dimensions**: Only core business attributes in dimensions
-- **Composite Keys**: GLMLocId+LocationType, OpportunityID+QuoteID
-- **Dual Location Support**: Separate A/Z references with attributes
+### 🎯 Total Columns: 182
+- **DIM_PRODUCT**: 10
+- **DIM_LOCATION_ADDRESS**: 51
+- **DIM_CUSTOMER**: 24 (with Industry)
+- **DIM_OPPORTUNITY**: 30
+- **FACT_CONFIGURATION**: 67
 
 ---
 
-**Schema Version**: Production Ready v3.0  
-**Total Columns**: 181  
-**Last Updated**: 2026-06-05  
-**Status**: ✓ Corrected & Optimized Production Schema
+**Schema Version**: Production Ready v3.1  
+**Total Columns**: 182  
+**Last Updated**: 2026-06-08  
+**Status**: ✓ Final Production Schema - APPROVED
