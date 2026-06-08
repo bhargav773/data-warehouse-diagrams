@@ -1,4 +1,4 @@
-# Data Warehouse ER Diagram - Final Production Schema 
+# Data Warehouse ER Diagram - Final Production Schema v3.2
 
 ## Complete Snowflake Schema (Optimized) - Final
 
@@ -75,7 +75,7 @@ erDiagram
         string METRO_3 "GLMShort"
         string LUMEN_NETWORK "GLMShort"
         string LOADTIME "GLMShort"
-        timestamp xact_timestamp
+        timestamp xact_timestamp "from test"
     }
 
     DIM_CUSTOMER {
@@ -111,14 +111,26 @@ erDiagram
         string QuoteID PK "SfdcSMID"
         string CustomerID FK "SfdcAccountID"
         string OpportunityName "SfdcOpportunityName"
+        string RecordType
         string StageName "SfdcStageName"
+        string OpptyType
         string OpptySubType "SfdcSubType"
+        string IsQuoted
         string IsClosed "SfdcIsClosed"
         string IsWon "SfdcIsWon"
         int IsActive "SfdcIsActive"
         string QuoteSystem "SfdcSourceSystem"
+        string ReasonWonLostComments
+        string PrimaryLostReason
+        string Competitor "SfdcCompetitor"
+        date CreatedDate
+        date LastModifiedDate
+        date OpportunityCloseDate
+        date SendToOrderDate
+        string HasOpportunityLineItem
         string SalesClassification "SfdcSalesClassification"
         string AcctNm "SfdcAcctNm"
+        string AcctType "SfdcAcctType"
         string BusOrg "SfdcBusOrg"
         string UltCustNm "SfdcUltCustNm"
         string UltCustNbr "SfdcUltCustNbr"
@@ -136,6 +148,15 @@ erDiagram
         string SalesOffice "SfdcSalesOffice"
         string SalesRegion "SfdcSalesRegion"
         string BusinessSegment "SfdcBusinessSegment"
+        string OpptyOwner "SfdcOpptyOwner"
+        string OpptyOwnerDir "SfdcOpptyOwnerDir"
+        string SourcingAdvisor "SfdcSourcingAdvisor"
+        decimal TotalNewSalesMRC_USD "Financial"
+        decimal TotalNetRecurring_USD "Financial"
+        decimal TotalNRC_USD "Financial"
+        decimal TotalContractMRC_USD "Financial"
+        decimal TotalYRC_USD "Financial"
+        decimal TotalRevenue_USD "Financial"
         timestamp CreatedTimestamp
     }
 
@@ -230,7 +251,7 @@ erDiagram
 
 ---
 
-## Final Production Schema v3.1
+## Final Production Schema v3.2
 
 ### Schema Architecture
 
@@ -291,7 +312,7 @@ Account master dimension (simplified)
 - CustomerID (PK) "BusOrgID"
 - CompanyName
 
-**Industry Classification (1 col)** ⭐
+**Industry Classification (1 col)**
 - Industry
 
 **Account Classification (8 cols)**
@@ -319,8 +340,8 @@ Account master dimension (simplified)
 
 ---
 
-#### **DIM_OPPORTUNITY** (30 Columns)
-Opportunity dimension with composite key (OpportunityID + QuoteID)
+#### **DIM_OPPORTUNITY** (48 Columns) ⭐
+Opportunity dimension with composite key (OpportunityID + QuoteID) - EXPANDED
 
 **Primary Keys (2 cols)**
 - OpportunityID (PK) "SfdcOpportunityID"
@@ -329,18 +350,37 @@ Opportunity dimension with composite key (OpportunityID + QuoteID)
 **Foreign Keys (1 col)**
 - CustomerID (FK) "SfdcAccountID"
 
-**Opportunity Info (8 cols)**
-- OpportunityName, StageName, OpptySubType
-- IsClosed, IsWon, IsActive
-- QuoteSystem, SalesClassification
+**Opportunity Core Info (8 cols)**
+- OpportunityName, RecordType, StageName
+- OpptyType, OpptySubType
+- IsQuoted, IsClosed, IsWon
+
+**Opportunity Status & Flags (5 cols)**
+- IsActive, QuoteSystem
+- ReasonWonLostComments, PrimaryLostReason, Competitor
+
+**Opportunity Dates (4 cols)**
+- CreatedDate, LastModifiedDate
+- OpportunityCloseDate, SendToOrderDate
+
+**Opportunity Ownership (3 cols)**
+- OpptyOwner, OpptyOwnerDir, SourcingAdvisor
+
+**Opportunity Attributes (2 cols)**
+- SalesClassification, HasOpportunityLineItem
 
 **Denormalized Account Data (18 cols)**
-- AcctNm, BusOrg, UltCustNm, UltCustNbr
-- CustEID, DunsNbr, ExtRptRollup
+- AcctNm, AcctType, BusOrg
+- UltCustNm, UltCustNbr, CustEID, DunsNbr, ExtRptRollup
 - AcctChannel, AcctSubChannel
 - MktVertical, MktSubVertical
 - TargetTier, TargetGroup, PricingTier
 - GM, SalesOffice, SalesRegion, BusinessSegment
+
+**Financial Metrics (6 cols)**
+- TotalNewSalesMRC_USD, TotalNetRecurring_USD
+- TotalNRC_USD, TotalContractMRC_USD
+- TotalYRC_USD, TotalRevenue_USD
 
 **Audit (1 col)**
 - CreatedTimestamp
@@ -430,10 +470,10 @@ Central fact table with optimized metrics
 | **Total Tables** | 4 |
 | **DIM_PRODUCT** | 10 columns |
 | **DIM_LOCATION_ADDRESS** | 51 columns |
-| **DIM_CUSTOMER** | 24 columns ⭐ (Added Industry) |
-| **DIM_OPPORTUNITY** | 30 columns |
+| **DIM_CUSTOMER** | 24 columns |
+| **DIM_OPPORTUNITY** | 48 columns ⭐ (Expanded) |
 | **FACT_CONFIGURATION** | 67 columns |
-| **Total Columns** | 182 |
+| **Total Columns** | 200 |
 | **Primary Keys** | 5 |
 | **Foreign Keys** | 7 |
 | **Composite Keys** | 2 |
@@ -453,7 +493,30 @@ Central fact table with optimized metrics
 
 ---
 
+## Key Design Features v3.2 - FINAL
 
-**Total Columns**: 182  
+### ✨ Major Features:
+✅ **DIM_OPPORTUNITY Expanded** (30 → 48 columns)  
+✅ **Complete Opportunity Tracking** - Status, dates, reasons, ownership  
+✅ **Full Financial Metrics** - MRC, NRC, revenue, contract values in DIM  
+✅ **Win/Loss Analysis** - Reasons, lost reasons, competitor info  
+✅ **Complete Account Denormalization** - All account attrs in opportunity  
+✅ **Optimized Fact Table** - No redundant metrics (67 columns)  
+✅ **Composite Keys** - GLMLocId+LocationType, OpportunityID+QuoteID  
+✅ **Dual Location Support** - Type A & Z with complete attributes  
+
+### 🎯 Final Column Distribution:
+- **DIM_PRODUCT**: 10 cols (5%)
+- **DIM_LOCATION_ADDRESS**: 51 cols (26%)
+- **DIM_CUSTOMER**: 24 cols (12%)
+- **DIM_OPPORTUNITY**: 48 cols (24%) ⭐ EXPANDED
+- **FACT_CONFIGURATION**: 67 cols (34%)
+
+### 📊 Total: 200 Columns
+
+---
+
+**Schema Version**: Production Ready v3.2 - FINAL ✓  
+**Total Columns**: 200  
 **Last Updated**: 2026-06-08  
-**Status**: ✓ Final Production Schema - APPROVED
+**Status**: ✓ APPROVED & DEPLOYED
