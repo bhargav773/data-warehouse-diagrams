@@ -133,7 +133,80 @@
             }
           }
         }
+      },
+      {
+        "name": "Copy_Customer",
+        "type": "Copy",
+        "dependsOn": [
+          {
+            "activity": "Set_Pipeline_Parameters",
+            "dependencyConditions": ["Succeeded"]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 1,
+          "retryIntervalInSeconds": 60,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "source": {
+            "type": "OracleSource",
+            "oracleReaderQuery": {
+              "value": "WITH MODIFIED_CUSTS AS (SELECT DISTINCT A.ID FROM (SELECT ID FROM CRPL_SALESFORCE_CTL.ACCOUNT WHERE TRUNC(LASTMODIFIEDDATE) >= TRUNC(TO_DATE('@{pipeline().parameters.CustomerLastLoadDate}', 'YYYY-MM-DD HH24:MI:SS')) OR TRUNC(CREATEDDATE) >= TRUNC(TO_DATE('@{pipeline().parameters.CustomerLastLoadDate}', 'YYYY-MM-DD HH24:MI:SS')) UNION SELECT A.ID FROM CRPL_SALESFORCE_CTL.ACCOUNT A INNER JOIN CRPL_SALESFORCE_CTL.\"USER\" U ON U.ID = A.OWNERID WHERE TRUNC(U.LASTMODIFIEDDATE) >= TRUNC(TO_DATE('@{pipeline().parameters.CustomerLastLoadDate}', 'YYYY-MM-DD HH24:MI:SS')) UNION SELECT A.ID FROM CRPL_SALESFORCE_CTL.ACCOUNT A INNER JOIN CRPL_SALESFORCE_CTL.Ultimate_Customer__C UC ON UC.ULTIMATE_CUSTOMER_NUMBER__C = A.ULTIMATE_CUSTOMER_NUMBER__C WHERE TRUNC(UC.LASTMODIFIEDDATE) >= TRUNC(TO_DATE('@{pipeline().parameters.CustomerLastLoadDate}', 'YYYY-MM-DD HH24:MI:SS')) UNION SELECT A.ID FROM CRPL_SALESFORCE_CTL.ACCOUNT A INNER JOIN CRPL_SALESFORCE_CTL.\"USER\" U ON U.ID = A.OWNERID INNER JOIN CRPL_SALESFORCE_CTL.\"USER\" UM ON UM.ID = U.MANAGERID WHERE TRUNC(UM.LASTMODIFIEDDATE) >= TRUNC(TO_DATE('@{pipeline().parameters.CustomerLastLoadDate}', 'YYYY-MM-DD HH24:MI:SS')) UNION SELECT A.ID FROM CRPL_SALESFORCE_CTL.ACCOUNT A INNER JOIN CRPL_SALESFORCE_CTL.\"USER\" U ON U.ID = A.OWNERID INNER JOIN CRPL_SALESFORCE_CTL.\"USER\" UD ON UD.ID = U.DIRECTOR__C WHERE TRUNC(UD.LASTMODIFIEDDATE) >= TRUNC(TO_DATE('@{pipeline().parameters.CustomerLastLoadDate}', 'YYYY-MM-DD HH24:MI:SS')) UNION SELECT A.ID FROM CRPL_SALESFORCE_CTL.ACCOUNT A INNER JOIN CRPL_SALESFORCE_CTL.\"USER\" U ON U.ID = A.OWNERID INNER JOIN CRPL_SALESFORCE_CTL.\"USER\" UVP ON UVP.ID = U.VP__C WHERE TRUNC(UVP.LASTMODIFIEDDATE) >= TRUNC(TO_DATE('@{pipeline().parameters.CustomerLastLoadDate}', 'YYYY-MM-DD HH24:MI:SS'))) A) SELECT A.ACCOUNT_NUMBER__C AS BusOrgID, A.NAME AS CompanyName, A.ULTIMATE_CUSTOMER_NUMBER__C AS UltCustNumber, UC.NAME AS UltCustName, A.CUSTOMER_EID__C AS CustEID, A.EXTERNAL_REPORTING_ROLLUP__C AS ExtRptRollup, A.ACCOUNT_CHANNEL__C AS AcctChannel, A.ACCOUNT_SUB_CHANNEL__C AS AcctSubChannel, A.MARKET_VERTICAL_IN_COUNTRY__C AS MktVertical, A.MARKET_SUB_VERTICAL_IN_COUNTRY AS MktSubVertical, A.TIER_IN_COUNTRY__C AS TargetTier, A.TARGET_GROUP_IN_COUNTRY__C AS TargetGroup, A.PRICING_TIER__C AS PricingTier, A.GM_REGION__C AS GM, U.FIRSTNAME AS AcctOwnerFirstNm, U.LASTNAME AS AcctOwnerLastNm, U.CUID__C AS AcctOwnerCUID, U.TITLE AS AcctOwnerTitle, U.EMAIL AS AcctOwnerEmail, U.COUNTRYCODE AS AcctOwnerCountryCode, U.GLOBAL_REGION__C AS AcctOwnerRegion, A.ACCOUNT_OWNER_SALES_REGION__C AS AcctOwnerSalesRegion, UM.NAME AS AcctOwnerManager, UD.NAME AS AcctOwnerDirector, UVP.NAME AS AcctOwnerVP, UC.Global_Account_Management__C AS GAM, A.BUSINESS_SEGMENT__C AS BusinessSegment, A.INDUSTRY AS Industry, A.ENTERPRISE_TARGET_GROUP_IN_COU AS EntTargetGroupInCountry, A.LOB_NAME__C AS LOBID, A.SIC, A.SICDESC AS SICDescription, A.SECURE_COMPANY__C AS SecureCompany, CAST(SYSDATE AS VARCHAR2(19)) AS xact_timestamp FROM CRPL_SALESFORCE_CTL.ACCOUNT A INNER JOIN MODIFIED_CUSTS MC ON MC.ID = A.ID LEFT JOIN CRPL_SALESFORCE_CTL.\"USER\" U ON U.ID = A.OWNERID LEFT JOIN CRPL_SALESFORCE_CTL.Ultimate_Customer__C UC ON UC.ULTIMATE_CUSTOMER_NUMBER__C = A.ULTIMATE_CUSTOMER_NUMBER__C LEFT JOIN CRPL_SALESFORCE_CTL.\"USER\" UM ON UM.ID = U.MANAGERID LEFT JOIN CRPL_SALESFORCE_CTL.\"USER\" UD ON UD.ID = U.DIRECTOR__C LEFT JOIN CRPL_SALESFORCE_CTL.\"USER\" UVP ON UVP.ID = U.VP__C ORDER BY A.LASTMODIFIEDDATE DESC",
+              "type": "Expression"
+            },
+            "partitionOption": "None",
+            "numberPrecision": 38,
+            "numberScale": 18,
+            "queryTimeout": "02:00:00",
+            "datasetSettings": {
+              "annotations": [],
+              "type": "OracleTable",
+              "schema": [],
+              "externalReferences": {
+                "connection": "b2f0f637-40dc-40f3-8994-314ae543c33b"
+              }
+            }
+          },
+          "sink": {
+            "type": "LakehouseTableSink",
+            "tableActionOption": "Append",
+            "applyVOrder": false,
+            "datasetSettings": {
+              "annotations": [],
+              "linkedService": {
+                "name": "Config_Staging",
+                "properties": {
+                  "annotations": [],
+                  "type": "Lakehouse",
+                  "typeProperties": {
+                    "workspaceId": "09e6b414-697d-4423-85ad-e5e5772e3422",
+                    "artifactId": "3ef9fe2e-ddb4-4860-9bcf-77e03bdd5d0c",
+                    "rootFolder": "Tables"
+                  }
+                }
+              },
+              "type": "LakehouseTable",
+              "schema": [],
+              "typeProperties": {
+                "schema": "dbo",
+                "table": "dim_customer"
+              }
+            }
+          },
+          "enableStaging": false,
+          "translator": {
+            "type": "TabularTranslator",
+            "typeConversion": true,
+            "typeConversionSettings": {
+              "allowDataTruncation": true,
+              "treatBooleanAsNumber": false
+            }
+          }
+        }
       }
-    }
+    ]
   }
 }
