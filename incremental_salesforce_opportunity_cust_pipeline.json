@@ -25,7 +25,9 @@
         "dependsOn": [
           {
             "activity": "Start_Pipeline",
-            "dependencyConditions": ["Succeeded"]
+            "dependencyConditions": [
+              "Succeeded"
+            ]
           }
         ],
         "policy": {
@@ -46,7 +48,9 @@
         "dependsOn": [
           {
             "activity": "Lookup_Function",
-            "dependencyConditions": ["Succeeded"]
+            "dependencyConditions": [
+              "Succeeded"
+            ]
           }
         ],
         "policy": {
@@ -67,7 +71,9 @@
         "dependsOn": [
           {
             "activity": "Set_Pipeline_Parameters",
-            "dependencyConditions": ["Succeeded"]
+            "dependencyConditions": [
+              "Succeeded"
+            ]
           }
         ],
         "policy": {
@@ -130,6 +136,204 @@
             "typeConversionSettings": {
               "allowDataTruncation": true,
               "treatBooleanAsNumber": false
+            }
+          }
+        }
+      },
+      {
+        "name": "Update_Metadata_Opportunity",
+        "type": "TridentNotebook",
+        "dependsOn": [
+          {
+            "activity": "Copy_Opportunity",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 1,
+          "retryIntervalInSeconds": 60,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "notebookId": "a1b2c3d4-0001-4000-8000-000000000001",
+          "workspaceId": "09e6b414-697d-4423-85ad-e5e5772e3422",
+          "parameters": {
+            "rows_copied": {
+              "value": "@activity('Copy_Opportunity').output.rowsCopied",
+              "type": "Expression"
+            },
+            "current_load_date": {
+              "value": "@utcnow()",
+              "type": "Expression"
+            }
+          }
+        }
+      },
+      {
+        "name": "Update_Metadata_Customer",
+        "type": "TridentNotebook",
+        "dependsOn": [
+          {
+            "activity": "Copy_Opportunity",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 1,
+          "retryIntervalInSeconds": 60,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "notebookId": "a1b2c3d4-0002-4000-8000-000000000002",
+          "workspaceId": "09e6b414-697d-4423-85ad-e5e5772e3422",
+          "parameters": {
+            "rows_copied": {
+              "value": "@activity('Copy_Customer').output.rowsCopied",
+              "type": "Expression"
+            },
+            "current_load_date": {
+              "value": "@utcnow()",
+              "type": "Expression"
+            }
+          }
+        }
+      },
+      {
+        "name": "Update_Metadata_Location",
+        "type": "TridentNotebook",
+        "dependsOn": [
+          {
+            "activity": "Set_Pipeline_Parameters",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 1,
+          "retryIntervalInSeconds": 60,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "notebookId": "a1b2c3d4-0003-4000-8000-000000000003",
+          "workspaceId": "09e6b414-697d-4423-85ad-e5e5772e3422",
+          "parameters": {
+            "rows_copied": {
+              "value": "@activity('Copy_Location').output.rowsCopied",
+              "type": "Expression"
+            },
+            "current_load_date": {
+              "value": "@utcnow()",
+              "type": "Expression"
+            }
+          }
+        }
+      },
+      {
+        "name": "Update_Metadata_ServiceLocation",
+        "type": "TridentNotebook",
+        "dependsOn": [
+          {
+            "activity": "Set_Pipeline_Parameters",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 1,
+          "retryIntervalInSeconds": 60,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "notebookId": "a1b2c3d4-0004-4000-8000-000000000004",
+          "workspaceId": "09e6b414-697d-4423-85ad-e5e5772e3422",
+          "parameters": {
+            "rows_copied": {
+              "value": "@activity('Copy_ServiceLocation').output.rowsCopied",
+              "type": "Expression"
+            },
+            "current_load_date": {
+              "value": "@utcnow()",
+              "type": "Expression"
+            }
+          }
+        }
+      },
+      {
+        "name": "Update_Metadata_NetworkEntity",
+        "type": "TridentNotebook",
+        "dependsOn": [
+          {
+            "activity": "Set_Pipeline_Parameters",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 1,
+          "retryIntervalInSeconds": 60,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "notebookId": "a1b2c3d4-0005-4000-8000-000000000005",
+          "workspaceId": "09e6b414-697d-4423-85ad-e5e5772e3422",
+          "parameters": {
+            "rows_copied": {
+              "value": "@activity('Copy_NetworkEntity').output.rowsCopied",
+              "type": "Expression"
+            },
+            "current_load_date": {
+              "value": "@utcnow()",
+              "type": "Expression"
+            }
+          }
+        }
+      },
+      {
+        "name": "Update_Metadata_FinancialMetrics",
+        "type": "TridentNotebook",
+        "dependsOn": [
+          {
+            "activity": "Set_Pipeline_Parameters",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 1,
+          "retryIntervalInSeconds": 60,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "notebookId": "a1b2c3d4-0006-4000-8000-000000000006",
+          "workspaceId": "09e6b414-697d-4423-85ad-e5e5772e3422",
+          "parameters": {
+            "rows_copied": {
+              "value": "@activity('Copy_FinancialMetrics').output.rowsCopied",
+              "type": "Expression"
+            },
+            "current_load_date": {
+              "value": "@utcnow()",
+              "type": "Expression"
             }
           }
         }
