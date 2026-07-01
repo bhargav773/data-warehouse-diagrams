@@ -15,10 +15,34 @@ This repository contains comprehensive ER diagrams and documentation for a **Sno
 
 | File | Description |
 |------|-------------|
-| `er_diagram_mermaid.md` | Interactive Mermaid ER diagram |
+| `DBO_WAREHOUSE_ER_DIAGRAM.md` | **Mermaid ER diagram — dbo schema** (`dim_location`, `dim_network_entity`, `dim_service_location`, `dim_opportunity`, `fact_financial_metrics`, `fact_financial_metrics_hl2`) |
+| `FABRIC_DATA_WAREHOUSE_SCHEMA_V4_1.md` | Fabric Lakehouse schema v4.1 (star schema with `FACT_CONFIGURATION` + `FACT_PROFITMAX_HL1`) |
+| `DATA_WAREHOUSE_COMPLETE_SCHEMA.md` | Complete production schema reference v3.4 |
+| `PRODUCTION_ER_DIAGRAM_FINAL.md` | Snowflake schema ER diagram (final optimised) |
+| `PRODUCTION_SCHEMA_V4_0.md` | Production schema v4.0 reference |
+| `er_diagram_mermaid.md` | Interactive Mermaid ER diagram (legacy) |
 | `schema_documentation.md` | Complete table and column definitions |
 | `sql_ddl_statements.sql` | DDL for all tables |
 | `metrics_reference.md` | Metrics categorization and definitions |
+
+## 📊 dbo Schema — Financial Metrics (New)
+
+See **[DBO_WAREHOUSE_ER_DIAGRAM.md](DBO_WAREHOUSE_ER_DIAGRAM.md)** for the latest ER diagram covering:
+
+- `dbo.dim_location` — master location dimension (address, geo, network attributes)
+- `dbo.dim_network_entity` — network entities linked to locations
+- `dbo.dim_service_location` — service availability per location
+- `dbo.dim_opportunity` — SFDC opportunity & quote dimension
+- `dbo.fact_financial_metrics` — configuration-level financial metrics fact table
+- `dbo.fact_financial_metrics_hl2` — quote-level (HL2) profitability metrics fact table
+
+### Key Relationships
+- `dim_network_entity.LOCATIONID` → `dim_location.LOCATIONID`
+- `dim_service_location.LOCATIONID` → `dim_location.LOCATIONID`
+- `fact_financial_metrics.(OPPORTUNITYID, QUOTEID)` → `dim_opportunity.(OPPORTUNITYID, QUOTEID)`
+- `fact_financial_metrics_hl2.(OPPORTUNITYID, QUOTEID)` → `dim_opportunity.(OPPORTUNITYID, QUOTEID)`
+
+---
 
 ## 🏗️ Architecture
 
